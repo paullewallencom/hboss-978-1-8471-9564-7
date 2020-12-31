@@ -1,0 +1,6 @@
+  private void assertFired(String ruleName) {
+    session.fireAllRules(new RuleNameEqualsAgendaFilter(
+        ruleName));
+    assertTrue(trackingAgendaEventListener
+        .isRuleFired(ruleName));
+  }

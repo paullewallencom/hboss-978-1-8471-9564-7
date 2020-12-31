@@ -1,0 +1,15 @@
+public class BasicRulesApp {
+  public static final void main(String[] args) {
+    KnowledgeBase knowledgeBase = createKnowledgeBase();
+    StatefulKnowledgeSession session = knowledgeBase
+        .newStatefulKnowledgeSession();
+
+    try {
+      Account account = new Account();
+      account.setBalance(50);
+      session.insert(account);
+      session.fireAllRules();
+    } finally {
+      session.dispose();
+    }
+  }

@@ -1,0 +1,18 @@
+    MinaTaskClient client = new MinaTaskClient("client 1",
+        new TaskClientHandler(
+        SystemEventListenerFactory.getSystemEventListener()));
+    NioSocketConnector connector = new NioSocketConnector();
+    SocketAddress address = new InetSocketAddress("127.0.0.1",
+        9123);
+    client.connect(connector, address);
+
+    BlockingTaskSummaryResponseHandler summaryHandler = 
+        new BlockingTaskSummaryResponseHandler();
+    client.getTasksAssignedAsPotentialOwner("123", "en-UK",
+        summaryHandler);
+    List<TaskSummary> tasks = summaryHandler.getResults();
+    assertEquals(1, tasks.size());
+    TaskSummary task = tasks.get(0);
+    assertEquals("Process Loan", task.getName());
+    assertEquals(3, task.getPriority());    
+    assertEquals(Status.Ready, task.getStatus());

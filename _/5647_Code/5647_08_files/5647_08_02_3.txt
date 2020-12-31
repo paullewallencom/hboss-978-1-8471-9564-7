@@ -1,0 +1,10 @@
+  @Test
+  public void notValid() {
+    session.insert(new DefaultMessage());
+    startProcess();
+    
+    assertTrue(trackingProcessEventListener.isNodeTriggered(
+        PROCESS_LOAN_APPROVAL, NODE_FAULT_NOT_VALID));
+    assertEquals(ProcessInstance.STATE_ABORTED,
+        processInstance.getState());
+  }

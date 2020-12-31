@@ -1,0 +1,3 @@
+    KnowledgeBaseConfiguration config = KnowledgeBaseFactory
+        .newKnowledgeBaseConfiguration();
+    config.setOption( EventProcessingOption.STREAM );

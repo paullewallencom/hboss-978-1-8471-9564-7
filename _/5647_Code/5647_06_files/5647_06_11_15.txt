@@ -1,0 +1,18 @@
+public class ValidationHelper {
+  /**
+   * inserts new logical assertion - a message
+   * @param drools KnowledgeHelper that is accessible from
+   *  rule condition
+   * @param context for the message
+   */
+  public static void error(KnowledgeHelper drools,
+      Object... context) {
+    KnowledgeRuntime knowledgeRuntime = drools
+        .getKnowledgeRuntime();
+    ReportFactory reportFactory = (ReportFactory) 
+        knowledgeRuntime.getGlobal("reportFactory");
+
+    drools.insertLogical(reportFactory.createMessage(
+        Message.Type.ERROR, drools.getRule().getName(),
+        context));
+  }

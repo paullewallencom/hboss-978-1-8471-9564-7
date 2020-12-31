@@ -1,0 +1,27 @@
+  @Test
+  public void processLoan() throws Exception {
+    EntityManagerFactory emf = Persistence
+        .createEntityManagerFactory("org.drools.task");
+
+    TaskService taskService = new TaskService(emf, 
+        SystemEventListenerFactory.getSystemEventListener());
+    MockUserInfo userInfo = new MockUserInfo();
+    taskService.setUserinfo(userInfo);
+    
+    TaskServiceSession taskSession = taskService
+        .createSession();
+    taskSession.addUser(new User("Administrator"));
+    taskSession.addUser(new User("123"));
+    taskSession.addUser(new User("456"));
+    taskSession.addUser(new User("789"));
+
+    MinaTaskServer server = new MinaTaskServer(taskService);
+    Thread thread = new Thread(server);
+    thread.start();
+    Thread.sleep(500);
+
+    WorkItemHandler htHandler = new WSHumanTaskHandler();
+    session.getWorkItemManager().registerWorkItemHandler(
+        "Human Task", htHandler);
+    setUpLowAmount();
+    startProcess();

@@ -1,0 +1,25 @@
+  @Before
+  public void setUp() throws Exception {
+    session = knowledgeBase.newStatefulKnowledgeSession();
+    
+    trackingProcessEventListener = 
+      new TrackingProcessEventListener();
+    session.addEventListener(trackingProcessEventListener);
+    session.getWorkItemManager().registerWorkItemHandler(
+        "Email", new SystemOutWorkItemHandler());
+
+    loanSourceAccount = new Account();
+    
+    customer = new Customer();
+    customer.setFirstName("Bob");
+    customer.setLastName("Green");
+    customer.setEmail("bob.green@mail.com");
+    Account account = new Account();
+    account.setNumber(123456789l);
+    customer.addAccount(account);
+    account.setOwner(customer);
+
+    loan = new Loan();
+    loan.setDestinationAccount(account);
+    loan.setAmount(BigDecimal.valueOf(4000.0));
+    loan.setDurationYears(2);

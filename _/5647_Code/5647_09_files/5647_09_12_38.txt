@@ -1,0 +1,16 @@
+handler.getTransactionTemplate().execute(
+    new TransactionCallback() {
+  public Object doInTransaction(TransactionStatus status) {
+    Integer sessionId = handler.getProcessIdToSessionIdMap()
+      .get(workItem.getProcessInstanceId());
+    StatefulKnowledgeSession session = handler
+      .getKnowledgeSessionLookup().loadSession(sessionId);
+    try {
+      session.getWorkItemManager().completeWorkItem(
+          workItemId, results );
+    } finally {
+      session.dispose();
+    }
+    return null;
+  }
+});

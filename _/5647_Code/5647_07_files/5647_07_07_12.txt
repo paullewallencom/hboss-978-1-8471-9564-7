@@ -1,0 +1,24 @@
+rule twoLargeWithdrawals
+dialect "mvel"
+  when
+    $account : Account( )
+    Number( $averageAmount : doubleValue ) from accumulate(
+      TransactionCompletedEvent( fromAccountNumber == 
+      $account.number, $amount : amount ) 
+      over window:time( 30d ) from entry-point 
+      TransactionStream, average( $amount ) )		
+    $t1 : TransactionCreatedEvent( fromAccountNumber == 
+      $account.number, amount > ($averageAmount * 3.00) ) over 
+      window:time(90s) from entry-point TransactionStream
+    $t2 : TransactionCreatedEvent( this != $t1, 
+      fromAccountNumber == $account.number, 
+      amount > ($averageAmount * 3.00) ) over 
+      window:time(90s) from entry-point TransactionStream
+  then
+    insert(new SuspiciousAccount($account.number, 
+      SuspiciousAccountSeverity.MINOR));
+    insert(new SuspiciousTransaction($t1.transactionUuid, 
+      SuspiciousTransactionSeverity.MINOR));
+    insert(new SuspiciousTransaction($t2.transactionUuid, 
+      SuspiciousTransactionSeverity.MINOR));
+end

@@ -1,0 +1,17 @@
+  @Test
+  public void transferFunds() {
+    mockery.checking(new Expectations() {
+      {
+        one(bankingService).transfer(loanSourceAccount,
+            loan.getDestinationAccount(), loan.getAmount());
+      }
+    });
+
+    setUpTransferWorkItem();
+    setUpLowAmount();
+    startProcess();
+    approveLoan();
+
+    assertTrue(trackingProcessEventListener.isNodeTriggered(
+        PROCESS_LOAN_APPROVAL, NODE_WORK_ITEM_TRANSFER));
+  }

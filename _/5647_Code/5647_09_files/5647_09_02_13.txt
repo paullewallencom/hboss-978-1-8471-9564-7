@@ -1,0 +1,27 @@
+  /**
+   * validates and stores a new customer
+   */
+  public void add(Customer customer) {
+    validate(customer);
+    customerRepository.addCustomer(customer);
+  }
+
+  /**
+   * validates and stores an existing customer
+   */
+  public void save(Customer customer) {
+    validate(customer);
+    customerRepository.updateCustomer(customer);
+  }
+  
+  /**
+   * validates customer, 
+   * @throws ValidationException if there are any errors
+   */
+  private void validate(Customer customer) {
+    ValidationReport report = validationService
+        .validate(customer);
+    if (!report.getMessagesByType(Type.ERROR).isEmpty()) {
+      throw new ValidationException(report);
+    }
+  }

@@ -1,0 +1,10 @@
+rule notification
+	when
+		$account : Account( status != Account.Status.BLOCKED )	
+		LostCardEvent( accountNumber == $account.number ) 
+		  from entry-point LostCardStream
+	then
+		modify($account) {
+			setStatus(Account.Status.BLOCKED)
+		};
+end

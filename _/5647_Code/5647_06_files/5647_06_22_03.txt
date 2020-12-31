@@ -1,0 +1,8 @@
+  private StatefulKnowledgeSession createKnowledgeSession(
+      BankingInquiryService inquiryService) {
+    StatefulKnowledgeSession session = knowledgeBase
+      .newStatefulKnowledgeSession();
+    session.setGlobal("reportFactory", reportFactory);
+    session.setGlobal("inquiryService", inquiryService);
+    return session;
+  }

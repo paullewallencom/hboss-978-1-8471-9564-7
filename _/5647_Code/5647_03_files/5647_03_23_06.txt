@@ -1,0 +1,21 @@
+public class ValidationHelper {
+
+  /**
+   * adds an error message to the global validation report
+   * @param drools RuleContext that is accessible from
+   *  rule condition
+   * @param context for the message
+   */
+  public static void error(RuleContext drools,
+      Object... context) {
+    KnowledgeRuntime knowledgeRuntime = drools
+        .getKnowledgeRuntime();
+    ValidationReport validationReport = (ValidationReport) 
+        knowledgeRuntime.getGlobal("validationReport");
+    ReportFactory reportFactory = (ReportFactory) 
+        knowledgeRuntime.getGlobal("reportFactory");
+
+    validationReport.addMessage(reportFactory.createMessage(
+        Message.Type.ERROR, drools.getRule().getName(),
+        context));
+  }

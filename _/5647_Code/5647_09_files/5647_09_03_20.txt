@@ -1,0 +1,31 @@
+public class CustomerSaveFormController extends
+    SimpleFormController {
+  @Autowired
+  private BankingService bankingService;
+  @Autowired
+  private BankingFactory bankingFactory;
+
+  public ModelAndView onSubmit(Object command,
+      BindException errors) throws ServletException {
+    Customer customer = (Customer) command;
+    try {
+      bankingService.add(customer);
+      return new ModelAndView(new RedirectView(
+          getSuccessView()));
+    } catch (ValidationException e) {
+      ValidationReport report = e.getValidationReport();
+      Map model = errors.getModel();
+      model.put("errors", report.getMessagesByType(
+          Message.Type.ERROR));
+      model.put("warnings", report
+          .getMessagesByType(Message.Type.WARNING));
+      return new ModelAndView(getFormView(), model);
+    }
+  }
+
+  protected Object formBackingObject(HttpServletRequest request)
+      throws ServletException {
+    Customer customer = bankingFactory.createCustomer();
+    return customer;
+  }
+}

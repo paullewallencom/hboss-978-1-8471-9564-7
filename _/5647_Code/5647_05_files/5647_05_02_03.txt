@@ -1,0 +1,19 @@
+  private KnowledgeBase createKnowledgeBaseFromDSL()
+      throws Exception {
+    KnowledgeBuilder builder = 
+        KnowledgeBuilderFactory.newKnowledgeBuilder();
+    builder.add(ResourceFactory.newClassPathResource(
+        "simple.dsl"), ResourceType.DSL);
+    builder.add(ResourceFactory.newClassPathResource(
+        "simple.dslr"), ResourceType.DSLR);
+    if (builder.hasErrors()) {
+      throw new RuntimeException(builder.getErrors()
+          .toString());
+    }    
+    
+    KnowledgeBase knowledgeBase = KnowledgeBaseFactory
+        .newKnowledgeBase();
+    knowledgeBase.addKnowledgePackages(
+        builder.getKnowledgePackages());
+    return knowledgeBase;
+  }

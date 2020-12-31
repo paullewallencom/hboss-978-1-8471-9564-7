@@ -1,0 +1,22 @@
+expander validation.dsl
+
+rule "address is required"
+	when
+		The Customer does not have address
+	then
+		Display warning	
+end
+
+rule "phone number is required"
+	when
+		The Customer does not have phone number or it is blank
+	then
+		Display error
+end
+
+rule "account owner is required"
+	when
+		The Account does not have owner
+	then		
+		Display error for Account
+end

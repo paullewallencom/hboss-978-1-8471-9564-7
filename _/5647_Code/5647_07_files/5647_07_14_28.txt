@@ -1,0 +1,28 @@
+  @Test
+  public void highActivity() throws Exception {
+    accountInfoFactType.set(accountInfo,
+        "averageNumberOfTransactions",BigDecimal.valueOf(10));
+    accountInfoFactType.set(accountInfo,
+        "numberOfTransactions1Day", 40l);
+    accountInfoFactType.set(accountInfo, "averageBalance",
+        BigDecimal.valueOf(9000));
+    session.update(accountInfoHandle, accountInfo);
+    assertNotFired("highActivity");
+
+    accountInfoFactType.set(accountInfo, "averageBalance",
+        BigDecimal.valueOf(11000));
+    session.update(accountInfoHandle, accountInfo);
+    assertNotFired("highActivity");
+
+    accountInfoFactType.set(accountInfo,
+        "numberOfTransactions1Day", 60l);
+    accountInfoFactType.set(accountInfo, "averageBalance",
+        BigDecimal.valueOf(6000));
+    session.update(accountInfoHandle, accountInfo);
+    assertNotFired("highActivity");
+
+    accountInfoFactType.set(accountInfo, "averageBalance",
+        BigDecimal.valueOf(11000));
+    session.update(accountInfoHandle, accountInfo);
+    assertFired("highActivity");
+  }

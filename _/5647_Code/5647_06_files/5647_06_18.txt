@@ -1,0 +1,10 @@
+rule createValidationReport
+salience -1000 //should be the last rule to fire
+	when
+		$messages : ArrayList( ) from collect( Message() )
+	then
+		validationReport.reset();
+		for(Message message : (List<Message>) $messages) {
+			validationReport.addMessage(message);
+		}
+end

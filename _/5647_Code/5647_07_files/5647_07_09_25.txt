@@ -1,0 +1,30 @@
+rule sequenceOfIncreasingWithdrawals
+  when
+    $account:Account($number : number)
+    $t1:TransactionCreatedEvent(fromAccountNumber == $number)
+      from entry-point TransactionStream    
+    $t2:TransactionCreatedEvent(amount > $t1.amount, 
+      fromAccountNumber == $number, this after[0, 3m] $t1)
+      from entry-point TransactionStream
+    not (TransactionCreatedEvent(fromAccountNumber == $number,
+      this after $t1, this before $t2 ) 
+      from entry-point TransactionStream)
+    $t3:TransactionCreatedEvent(amount > $t2.amount, 
+      fromAccountNumber == $number, this after[0, 3m] $t2 )
+      from entry-point TransactionStream
+    not (TransactionCreatedEvent(fromAccountNumber == $number,
+      this after $t2, this before $t3 ) 
+      from entry-point TransactionStream)
+    $ai : AccountInfo(number == $number, eval($t1.amount.add(
+      $t2.amount).add($t3.amount).compareTo(BigDecimal.
+      valueOf(0.90).multiply(averageBalance)) > 0))
+  then
+    insert(new SuspiciousAccount($number, 
+      SuspiciousAccountSeverity.MAJOR));
+    insert(new SuspiciousTransaction($t1.transactionUuid, 
+      SuspiciousTransactionSeverity.MAJOR));
+    insert(new SuspiciousTransaction($t2.transactionUuid, 
+      SuspiciousTransactionSeverity.MAJOR));
+    insert(new SuspiciousTransaction($t3.transactionUuid, 
+      SuspiciousTransactionSeverity.MAJOR));
+end 

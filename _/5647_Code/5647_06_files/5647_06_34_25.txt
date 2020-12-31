@@ -1,0 +1,12 @@
+  private Marshaller createSerializableMarshaller(
+      KnowledgeBase knowledgeBase) {    
+    ObjectMarshallingStrategyAcceptor acceptor = 
+        MarshallerFactory.newClassFilterAcceptor( 
+        new String[] { "*.*" } );
+    ObjectMarshallingStrategy strategy = MarshallerFactory
+        .newSerializeMarshallingStrategy( acceptor );
+    Marshaller marshaller = MarshallerFactory.newMarshaller( 
+        knowledgeBase, new ObjectMarshallingStrategy[] { 
+        strategy } );
+    return marshaller;
+  }

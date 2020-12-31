@@ -1,0 +1,27 @@
+  KnowledgeBase knowledgeBase;
+  Account loanSourceAccount;
+  
+  /**
+   * runs the  loan approval process for a specified 
+   * customer's loan
+   */
+  public void approveLoan(Loan loan, Customer customer) {
+    StatefulKnowledgeSession session = knowledgeBase
+        .newStatefulKnowledgeSession();    
+    try {
+      //TODO: register workitem/human task handlers
+      Map<String, Object> parameterMap = 
+        new HashMap<String, Object>();
+      parameterMap.put("loanSourceAccount",loanSourceAccount);
+      parameterMap.put("customer", customer);
+      parameterMap.put("loan", loan);      
+      session.insert(loan);
+      session.insert(customer);
+      ProcessInstance processInstance = 
+        session.startProcess("loanApproval", parameterMap);
+      session.insert(processInstance);
+      session.fireAllRules();
+    } finally {
+      session.dispose();
+    }
+  }

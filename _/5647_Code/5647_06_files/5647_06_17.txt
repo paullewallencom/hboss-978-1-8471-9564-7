@@ -1,0 +1,6 @@
+  /**
+   * clears this report
+   */
+  public void reset() {
+    messagesMap.clear();
+  }

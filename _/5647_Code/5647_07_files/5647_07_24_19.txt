@@ -1,0 +1,10 @@
+    accountInfoFactType = knowledgeBase.getFactType(
+      "droolsbook.cep", "AccountInfo");
+    accountInfo = accountInfoFactType.newInstance();
+    accountInfoFactType.set(accountInfo, "number", 
+      account.getNumber());
+    accountInfoFactType.set(accountInfo, "averageBalance", 
+      BigDecimal.ZERO);
+    accountInfoFactType.set(accountInfo, "averageAmount", 
+      BigDecimal.ZERO);    
+    accountInfoHandle = session.insert(accountInfo);

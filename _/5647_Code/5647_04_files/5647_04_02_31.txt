@@ -1,0 +1,5 @@
+    List customers = sqlMapClient
+        .queryForList("findAllCustomers");
+
+    List addresses = sqlMapClient.queryForList(
+        "findAddressByCustomerId", new Long(654258));

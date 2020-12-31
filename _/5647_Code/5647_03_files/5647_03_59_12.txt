@@ -1,0 +1,6 @@
+rule "accountBalanceAtLeast"
+	when
+		$account : Account( balance < 100 )		
+	then		
+		warning(drools, $account);
+end 

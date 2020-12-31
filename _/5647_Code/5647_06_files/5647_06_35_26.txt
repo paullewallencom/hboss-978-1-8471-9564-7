@@ -1,0 +1,17 @@
+  private void readObject(ObjectInputStream in)
+      throws IOException, ClassNotFoundException {
+    in.defaultReadObject();
+
+    DroolsObjectInputStream droolsIn = 
+        new DroolsObjectInputStream((InputStream) in);
+    this.knowledgeBase = (KnowledgeBase)droolsIn.readObject();
+
+    Marshaller marshaller = createSerializableMarshaller(
+        knowledgeBase);
+    statefulSession = marshaller.unmarshall(droolsIn);
+
+    this.reportFactory = new DefaultReportFactory();    
+    statefulSession.setGlobal("reportFactory", reportFactory);
+    statefulSession.setGlobal("inquiryService",
+        new BankingInquiryServiceImpl());
+  }

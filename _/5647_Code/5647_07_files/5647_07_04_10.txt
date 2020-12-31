@@ -1,0 +1,4 @@
+query averageBalanceQuery
+  Number( $averageBalance : doubleValue ) from accumulate(
+    $account : Account($balance : balance), average($balance))
+end

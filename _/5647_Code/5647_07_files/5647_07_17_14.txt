@@ -1,0 +1,5 @@
+  private void transactionCompletedEvent(
+      double amountTransferred) {
+    entry.insert(new TransactionCompletedEvent(BigDecimal
+        .valueOf(amountTransferred), account.getNumber()));
+  }

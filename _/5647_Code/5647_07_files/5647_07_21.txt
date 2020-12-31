@@ -1,0 +1,17 @@
+  @Test
+  public void instancesEqualsBeta() throws Exception {
+    Customer customer = new Customer();
+    Account account = new Account();
+
+    session.execute(Arrays.asList(customer, account));
+    assertNotFired("accountHasCustomer");
+
+    account.setOwner(new Customer());
+    session.execute(Arrays.asList(customer, account));
+    assertNotFired("accountHasCustomer");
+
+    account.setOwner(customer);
+    session.execute(Arrays.asList(customer, account));
+    assertFired("accountHasCustomer");
+  }
+

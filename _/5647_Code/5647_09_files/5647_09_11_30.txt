@@ -1,0 +1,55 @@
+/**
+ * works with persistable knowledge sessions
+ */
+public class JPAKnowledgeSessionLookup implements
+    KnowledgeSessionLookup {
+
+  @PersistenceUnit(unitName="droolsEntityManagerFactory")
+  private EntityManagerFactory emf;
+
+  private KnowledgeBase knowledgeBase;
+  private Environment environment;
+  
+  private WorkItemHandler emailHandler;
+  private WorkItemHandler transferFundsHandler;
+  private WorkItemHandler humanTaskHandler;  
+
+  public void init() {
+    environment = EnvironmentFactory.newEnvironment();
+    environment.set(EnvironmentName.ENTITY_MANAGER_FACTORY,
+        emf);
+    environment.set(
+        EnvironmentName.OBJECT_MARSHALLING_STRATEGIES,
+        new ObjectMarshallingStrategy[] { MarshallerFactory
+            .newSerializeMarshallingStrategy() });
+  }
+
+  public StatefulKnowledgeSession newSession() {
+    StatefulKnowledgeSession session = JPAKnowledgeService
+        .newStatefulKnowledgeSession(knowledgeBase, null,
+            environment);
+    registerWorkItemHandlers(session);
+    return session;
+  }
+
+  public StatefulKnowledgeSession loadSession(int sessionId) {
+    StatefulKnowledgeSession session = JPAKnowledgeService
+        .loadStatefulKnowledgeSession(sessionId,
+            knowledgeBase, null, environment);
+    registerWorkItemHandlers(session);
+    return session;
+  }
+
+  /**
+   * helper method for registering work item handlers 
+   * (they are not persisted) 
+   */
+  private void registerWorkItemHandlers(
+      StatefulKnowledgeSession session) {
+    WorkItemManager manager = session.getWorkItemManager();
+    manager.registerWorkItemHandler("Human Task",
+        humanTaskHandler);
+    manager.registerWorkItemHandler("Email", emailHandler);
+    manager.registerWorkItemHandler("Transfer Funds", 
+        transferFundsHandler);
+  }

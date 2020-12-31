@@ -1,0 +1,7 @@
+rule notification 
+	when
+		$transaction : Transaction( )
+		Notification( transaction == $transaction )		
+	then
+		insertLogical(new SuspiciousTransaction($transaction))
+end

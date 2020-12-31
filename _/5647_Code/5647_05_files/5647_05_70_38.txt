@@ -1,0 +1,19 @@
+  static KnowledgeBase createKnowledgeBaseFromRuleFlow()
+      throws Exception {
+    KnowledgeBuilder builder = KnowledgeBuilderFactory
+      .newKnowledgeBuilder();
+    builder.add(ResourceFactory.newClassPathResource(
+        "dataTransformation-ruleflow.drl"), ResourceType.DRL);
+    builder.add(ResourceFactory.newClassPathResource(
+        "dataTransformation.rf"), ResourceType.DRF);
+    if (builder.hasErrors()) {
+      throw new RuntimeException(builder.getErrors()
+          .toString());
+    }
+    
+    KnowledgeBase knowledgeBase = KnowledgeBaseFactory
+        .newKnowledgeBase();
+    knowledgeBase.addKnowledgePackages(builder
+        .getKnowledgePackages());
+    return knowledgeBase;
+  }

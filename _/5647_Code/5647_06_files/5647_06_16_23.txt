@@ -1,0 +1,26 @@
+  @Test
+  public void testSerialization() throws Exception {
+    Customer customer = createValidCustomer();    
+    statefulService.insertOrUpdateRecursive(customer);
+    
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream out = new ObjectOutputStream(baos);
+    out.writeObject(statefulService);
+    out.close();
+    
+    byte[] bArray = baos.toByteArray();
+    ObjectInputStream in = new ObjectInputStream(
+        new ByteArrayInputStream(bArray));
+    statefulService = (StatefulServiceImpl) in.readObject();
+    in.close();
+    statefulService.insertOrUpdateRecursive(customer);
+    
+    ValidationReport report = statefulService.executeRules();
+    assertEquals(0, report.getMessages().size());
+
+    customer.setPhoneNumber(null);    
+    statefulService.insertOrUpdate(customer);
+    report = statefulService.executeRules();
+    assertEquals(1, report.getMessages().size());
+    assertTrue(report.contains("phoneNumberRequired"));
+  }

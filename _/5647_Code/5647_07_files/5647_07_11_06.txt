@@ -1,0 +1,56 @@
+  public static class InstanceEqualsEvaluator extends
+      BaseEvaluator {
+
+    public InstanceEqualsEvaluator(final ValueType type,
+        final boolean isNegated) {
+      super(type, isNegated ? NOT_INSTANCE_EQUALS
+          : INSTANCE_EQUALS);
+    }
+
+    @Override
+    public boolean evaluate(
+        InternalWorkingMemory workingMemory,
+        InternalReadAccessor extractor, Object object,
+        FieldValue value) {
+      final Object objectValue = extractor.getValue(
+          workingMemory, object);
+      return this.getOperator().isNegated()
+          ^ (objectValue == value.getValue());
+    }
+
+    @Override
+    public boolean evaluate(
+        InternalWorkingMemory workingMemory,
+        InternalReadAccessor leftExtractor, Object left,
+        InternalReadAccessor rightExtractor, Object right) {
+      final Object value1 = leftExtractor.getValue(
+          workingMemory, left);
+      final Object value2 = rightExtractor.getValue(
+          workingMemory, right);
+      return this.getOperator().isNegated()
+          ^ (value1 == value2);
+    }
+
+    @Override
+    public boolean evaluateCachedLeft(
+        InternalWorkingMemory workingMemory,
+        VariableContextEntry context, Object right) {
+      return this.getOperator().isNegated()
+          ^ (right == ((ObjectVariableContextEntry) 
+          context).left);
+    }
+
+    @Override
+    public boolean evaluateCachedRight(
+        InternalWorkingMemory workingMemory,
+        VariableContextEntry context, Object left) {
+      return this.getOperator().isNegated()
+          ^ (left == ((ObjectVariableContextEntry) 
+          context).right);
+    }
+
+    @Override
+    public String toString() {
+      return "InstanceEquals instanceEquals";
+    }
+  }

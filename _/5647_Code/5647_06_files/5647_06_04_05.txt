@@ -1,0 +1,8 @@
+  public ValidationReport executeRules() {
+    ValidationReport validationReport = 
+        reportFactory.createValidationReport();
+    statefulSession.setGlobal("validationReport",
+        validationReport);    
+    statefulSession.fireAllRules();
+    return validationReport;
+  }

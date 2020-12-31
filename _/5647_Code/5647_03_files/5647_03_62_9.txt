@@ -1,0 +1,12 @@
+  @Test
+  public void addressRequired() throws Exception {
+    Customer customer = createCustomerBasic();
+    assertNull(customer.getAddress());
+    assertReportContains(Message.Type.WARNING,
+        "addressRequired", customer);
+
+    customer.setAddress(new Address());
+    assertNotReportContains(Message.Type.WARNING,
+        "addressRequired", customer);
+  }
+

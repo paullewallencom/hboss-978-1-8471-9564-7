@@ -1,0 +1,11 @@
+  private void startProcess() {
+    Map<String, Object> parameterMap = 
+        new HashMap<String, Object>();
+    parameterMap.put("loanSourceAccount", loanSourceAccount);
+    parameterMap.put("customer", customer);
+    parameterMap.put("loan", loan);
+    processInstance = session.startProcess(
+        PROCESS_LOAN_APPROVAL, parameterMap);
+    session.insert(processInstance);
+    session.fireAllRules();
+  }

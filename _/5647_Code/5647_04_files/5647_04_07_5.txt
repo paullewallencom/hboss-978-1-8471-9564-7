@@ -1,0 +1,12 @@
+rule twoEqualAddressesDifferentInstance
+	when
+		$addressMap1 : Map( this["_type_"] == "Address" )
+		$addressMap2 : Map( this["_type_"] == "Address", 
+			eval( $addressMap1 != $addressMap2 ), 
+			this == $addressMap1 )
+	then
+		retract( $addressMap2 );
+		validationReport.addMessage(
+			reportFactory.createMessage(Message.Type.WARNING, 
+			drools.getRule().getName(), $addressMap2));
+end

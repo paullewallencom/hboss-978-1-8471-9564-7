@@ -1,0 +1,23 @@
+  @Test
+  public void reduceLegacyAccounts() throws Exception {
+    Map accountMap1 = new HashMap();
+    accountMap1.put("_type_", "Account");
+    accountMap1.put("customer_id", "00123");
+    accountMap1.put("balance", new BigDecimal("100.00"));
+
+    Map accountMap2 = new HashMap();
+    accountMap2.put("_type_", "Account");
+    accountMap2.put("customer_id", "00123");
+    accountMap2.put("balance", new BigDecimal("300.00"));
+
+    ExecutionResults results = execute(Arrays.asList(
+        accountMap1, accountMap2), "reduceLegacyAccounts",
+        "Account", "accounts");
+
+    Iterator<?> accountIterator = ((List<?>) results
+        .getValue("accounts")).iterator();
+    Map accountMap = (Map) accountIterator.next();
+    assertEquals(new BigDecimal("400.00"), accountMap
+        .get("balance"));
+    assertFalse(accountIterator.hasNext());
+  }

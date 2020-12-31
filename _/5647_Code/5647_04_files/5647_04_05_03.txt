@@ -1,0 +1,11 @@
+rule findAddress
+dialect "mvel"
+	when
+		$customerMap : Map( this["_type_"] == "Customer" )
+		$addressMap : Map( ) 
+			from legacyService.findAddressByCustomerId( 
+				$customerMap["customer_id"] )		
+	then		
+		$addressMap["_type_"] = "Address"
+		insert( $addressMap )
+end

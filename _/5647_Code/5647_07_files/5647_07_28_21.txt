@@ -1,0 +1,4 @@
+    $averageBalance : BigDecimal( ) from accumulate(
+      AccountUpdatedEvent( accountNumber == $account.number, 
+      $balance : balance ) over window:time( 30d ) from 
+      entry-point AccountStream, bigDecimalAverage($balance))

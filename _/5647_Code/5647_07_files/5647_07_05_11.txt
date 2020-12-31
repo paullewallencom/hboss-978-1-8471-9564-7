@@ -1,0 +1,19 @@
+  @Test
+  public void averageBalanceQuery() throws Exception {
+    session.fireAllRules();
+    assertEquals(account.getBalance(), getAverageBalance());
+
+    Account account2 = new Account();
+    account2.setBalance(BigDecimal.valueOf(1400));
+    session.insert(account2);
+    session.fireAllRules();
+    assertEquals(BigDecimal.valueOf(1200.00),
+        getAverageBalance());
+  }
+
+  BigDecimal getAverageBalance() {
+    QueryResults queryResults = session
+        .getQueryResults("averageBalanceQuery");
+    return BigDecimal.valueOf((Double) queryResults
+        .iterator().next().get("$averageBalance"));
+  }

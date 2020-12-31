@@ -1,0 +1,10 @@
+rule addressNormalizationUSA
+dialect "mvel"
+	when
+		$addressMap : Map( this["_type_"] == "Address", 
+			this["country"] in ("US", "U.S.", "USA", "U.S.A"))
+	then
+		modify( $addressMap ) {
+			put("country", Country.USA)
+		}
+end

@@ -1,0 +1,13 @@
+public class StatefulServiceImpl implements StatefulService,
+    Serializable {  
+  private transient KnowledgeBase knowledgeBase;
+  private transient StatefulKnowledgeSession statefulSession;
+  private transient ReportFactory reportFactory;  
+
+  public StatefulServiceImpl(KnowledgeBase knowledgeBase,
+      ReportFactory reportFactory,
+      BankingInquiryService inquiryService) {
+    this.reportFactory = reportFactory;
+    this.knowledgeBase = knowledgeBase;
+    statefulSession = createKnowledgeSession(inquiryService);
+  }

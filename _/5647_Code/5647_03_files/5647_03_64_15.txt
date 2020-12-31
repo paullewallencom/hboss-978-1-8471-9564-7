@@ -1,0 +1,7 @@
+  /**
+   * @return number of years between today and specified date 
+   */
+  public static int yearsPassedSince(Date date) {
+    return Years.yearsBetween(new DateMidnight(date),
+        new DateMidnight()).getYears();
+  }

@@ -1,0 +1,13 @@
+  private DateMidnight startDate;
+  private DateMidnight endDate;  
+  
+  /**
+   * @return number of months between start and end date
+   */
+  public int getMonthsBetweenStartAndEndDate() {
+    if (startDate == null || endDate == null) {
+      return 0;
+    }
+    return Months.monthsBetween(startDate, endDate)
+        .getMonths();
+  }

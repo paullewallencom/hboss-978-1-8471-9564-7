@@ -1,0 +1,34 @@
+@Repository
+public class JPACustomerRepository implements
+    CustomerRepository {
+
+  @PersistenceContext(unitName="entityManagerFactory")
+  private EntityManager em;
+
+  public Customer findCustomerByUuid(String customerUuid) {
+    return em.find(Customer.class, customerUuid);
+  }
+
+  public List<Customer> findCustomerByName(String firstName,
+      String lastName) {
+    return em
+        .createQuery(
+            "from Customer as c where c.firstName = :first" + 
+            " and c.lastName = :last")
+        .setParameter("first", firstName).setParameter("last",
+            lastName).getResultList();
+  }
+
+  /**
+   * stores new customer
+   */
+  public void addCustomer(Customer customer) {
+    em.persist(customer);
+  }
+
+  /**
+   * stores existing customer
+   */
+  public Customer updateCustomer(Customer customer) {
+    return em.merge(customer);
+  }

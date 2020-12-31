@@ -1,0 +1,9 @@
+ResourceFactory.getResourceChangeScannerService().start(); 
+ResourceFactory.getResourceChangeNotifierService().start();    
+
+KnowledgeAgentConfiguration conf = KnowledgeAgentFactory
+  .newKnowledgeAgentConfiguration();
+conf.setProperty("drools.agent.scanDirectories", "true");
+
+final KnowledgeAgent agent = KnowledgeAgentFactory
+  .newKnowledgeAgent("validation agent", knowledgeBase, conf);

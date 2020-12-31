@@ -1,0 +1,13 @@
+  @Test
+  public void deposit125EURfor40Days() throws Exception {
+    account.setType(Account.Type.SAVINGS);
+    account.setBalance(new BigDecimal("125.00"));
+    account.setCurrency("EUR");
+    account.setStartDate(DATE.minusDays(40));
+    account.setEndDate(DATE);
+
+    session.execute(account);
+
+    assertEquals(new BigDecimal("3.00"), account
+        .getInterestRate());
+  }

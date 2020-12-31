@@ -1,0 +1,5 @@
+    TransferWorkItemHandler transferHandler = 
+        new TransferWorkItemHandler();
+    transferHandler.setBankingService(bankingService);
+    session.getWorkItemManager().registerWorkItemHandler(
+        "Transfer Funds", transferHandler);

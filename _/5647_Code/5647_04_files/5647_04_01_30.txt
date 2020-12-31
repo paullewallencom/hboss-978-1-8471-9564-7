@@ -1,0 +1,5 @@
+    Reader reader = Resources
+        .getResourceAsReader("SqlMapConfig.xml");
+    SqlMapClient sqlMapClient = SqlMapClientBuilder
+        .buildSqlMapClient(reader);
+    reader.close();

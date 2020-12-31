@@ -1,0 +1,27 @@
+  @Test
+  public void twoEqualAddressesDifferentInstance()
+      throws Exception {
+    Map addressMap1 = new HashMap();
+    addressMap1.put("_type_", "Address");
+    addressMap1.put("street", "Barrack Street");
+
+    Map addressMap2 = new HashMap();
+    addressMap2.put("_type_", "Address");
+    addressMap2.put("street", "Barrack Street");
+    assertEquals(addressMap1, addressMap2);
+
+    ExecutionResults results = execute(Arrays.asList(
+        addressMap1, addressMap2),
+        "twoEqualAddressesDifferentInstance", "Address",
+        "addresses");
+
+    Iterator<?> addressIterator = ((List<?>) results
+        .getValue("addresses")).iterator();
+    Map addressMapWinner = (Map) addressIterator.next();
+    assertEquals(addressMap1, addressMapWinner);
+    assertFalse(addressIterator.hasNext());
+    reportContextContains(results,
+        "twoEqualAddressesDifferentInstance",
+        addressMapWinner == addressMap1 ? addressMap2
+            : addressMap1);
+  }

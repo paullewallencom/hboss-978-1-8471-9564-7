@@ -1,0 +1,17 @@
+<projectDescription>
+  <name>dsl</name>
+  <comment/>
+  <projects>
+    <project>bankingcore</project>
+    <project>etl_iBatis</project>
+    <project>validation</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>

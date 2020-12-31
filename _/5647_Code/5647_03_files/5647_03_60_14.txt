@@ -1,0 +1,7 @@
+rule "studentAccountCustomerAgeLessThan"
+	when				
+		Customer( eval (yearsPassedSince(dateOfBirth) >= 27) )
+		$account : Account( type == Account.Type.STUDENT )		
+	then
+		error(drools, $account);
+end

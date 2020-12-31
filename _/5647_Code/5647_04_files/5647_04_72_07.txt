@@ -1,0 +1,31 @@
+  /**
+   * creates multiple commands, calls session.execute and 
+   * returns results back  
+   */
+  protected ExecutionResults execute(Iterable objects,
+      String ruleName, final String filterType,
+      String filterOut) {
+    ValidationReport validationReport = reportFactory
+        .createValidationReport();
+    List<Command<?>> commands = new ArrayList<Command<?>>();
+    commands.add(CommandFactory.newSetGlobal(
+        "validationReport", validationReport, true));
+    commands.add(CommandFactory.newInsertElements(objects));
+    commands.add(new FireAllRulesCommand(
+        new RuleNameEqualsAgendaFilter(ruleName)));
+    if (filterType != null && filterOut != null) {
+      GetObjectsCommand getObjectsCommand = 
+        new GetObjectsCommand( new ObjectFilter() {
+            public boolean accept(Object object) {
+              return object instanceof Map
+                  && ((Map) object).get("_type_").equals(
+                      filterType);
+            }
+          });
+      getObjectsCommand.setOutIdentifier(filterOut);
+      commands.add(getObjectsCommand);
+    }
+    ExecutionResults results = session
+        .execute(CommandFactory.newBatchExecution(commands));
+    return results;
+  }

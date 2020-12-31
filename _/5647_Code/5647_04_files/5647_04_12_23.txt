@@ -1,0 +1,36 @@
+  /**
+   * transforms customerMap, creates and stores new customer
+   */
+  protected void processCustomer(Map customerMap) {
+    ValidationReport validationReport = reportFactory
+        .createValidationReport();
+
+    List<Command<?>> commands = new ArrayList<Command<?>>();
+    commands.add(CommandFactory.newSetGlobal(
+        "validationReport", validationReport));
+    commands.add(CommandFactory.newInsert(customerMap));
+    commands.add(new FireAllRulesCommand(
+        new RuleNameEqualsAgendaFilter("findAllCustomers")));
+    commands.add(CommandFactory.newQuery(
+        "address", "getAddressByCustomerId",
+        new Object[] { customerMap }));
+    commands.add(CommandFactory.newQuery(
+        "accounts", "getAccountByCustomerId",
+        new Object[] { customerMap }));
+    ExecutionResults results = session.execute(
+        CommandFactory.newBatchExecution(commands));
+    
+    if (!validationReport.getMessagesByType(Type.ERROR)
+        .isEmpty()) {
+      logError(validationReport
+          .getMessagesByType(Type.ERROR));
+      logWarning(validationReport
+          .getMessagesByType(Type.WARNING));
+    } else {
+      logWarning(validationReport
+          .getMessagesByType(Type.WARNING));
+      Customer customer = buildCustomer(customerMap,
+          results);
+      bankingService.add(customer); // runs validation
+    }
+  }

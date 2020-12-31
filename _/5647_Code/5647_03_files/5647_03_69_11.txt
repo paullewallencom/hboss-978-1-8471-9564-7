@@ -1,0 +1,17 @@
+  @Test
+  public void accountBalanceAtLeast() throws Exception {
+    Customer customer = createCustomerBasic();
+    Account account =customer.getAccounts().iterator().next();
+    assertEquals(BigDecimal.ZERO, account.getBalance());
+    assertReportContains(Message.Type.WARNING,
+        "accountBalanceAtLeast", customer, account);
+
+    account.setBalance(new BigDecimal("54.00"));
+    assertReportContains(Message.Type.WARNING,
+        "accountBalanceAtLeast", customer, account);
+
+    account.setBalance(new BigDecimal("122.34"));
+    assertNotReportContains(Message.Type.WARNING,
+        "accountBalanceAtLeast", customer);
+  }
+

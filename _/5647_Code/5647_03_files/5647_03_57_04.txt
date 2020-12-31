@@ -1,0 +1,15 @@
+package droolsbook.validation;
+
+import org.drools.runtime.rule.RuleContext;
+ 
+import droolsbook.bank.model.*;
+import droolsbook.bank.service.*;
+
+global ValidationReport validationReport;
+global ReportFactory reportFactory;
+global BankingInquiryService inquiryService;
+
+import function 
+	droolsbook.bank.service.ValidationHelper.error;
+import function 
+	droolsbook.bank.service.ValidationHelper.warning;

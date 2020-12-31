@@ -1,0 +1,9 @@
+  @Test
+  public void statefulValidation() throws Exception {
+    Customer customer = createValidCustomer();
+
+    customer.setPhoneNumber("");
+    statefulService.insertOrUpdate(customer);
+    ValidationReport report = statefulService.executeRules();
+    assertEquals(1, report.getMessages().size());
+    assertTrue(report.contains("phoneNumberRequired"));

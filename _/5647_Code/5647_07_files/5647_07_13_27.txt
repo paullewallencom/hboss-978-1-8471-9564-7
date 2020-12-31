@@ -1,0 +1,12 @@
+rule highActivity
+  when
+    $account : Account( )
+    $accountInfo : AccountInfo( number == $account.number,
+      numberOfTransactions1Day > (averageNumberOfTransactions.
+      multiply(BigDecimal.valueOf(5.00))), averageBalance > 
+      ($account.getBalance().multiply(
+      BigDecimal.valueOf(10.00))) )
+  then
+    insert(new SuspiciousAccount($account.getNumber(),
+      SuspiciousAccountSeverity.MINOR));
+end

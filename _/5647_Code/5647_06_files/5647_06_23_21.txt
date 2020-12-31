@@ -1,0 +1,8 @@
+  private void writeObject(ObjectOutputStream out)
+      throws IOException {
+    out.defaultWriteObject();
+
+    DroolsObjectOutputStream droolsOut = 
+        new DroolsObjectOutputStream((OutputStream) out);
+    droolsOut.writeObject(knowledgeBase);
+  }

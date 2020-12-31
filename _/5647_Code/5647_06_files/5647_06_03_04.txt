@@ -1,0 +1,24 @@
+  public void insertOrUpdate(Object fact) {
+    if (fact == null) {
+      return;
+    }
+
+    FactHandle factHandle = statefulSession
+        .getFactHandle(fact);
+
+    if (factHandle == null) {
+      statefulSession.insert(fact);
+    } else {
+      statefulSession.update(factHandle, fact);
+    }
+  }
+
+  public void insertOrUpdateRecursive(Customer customer) {
+    insertOrUpdate(customer); 
+    insertOrUpdate(customer.getAddress());
+    if (customer.getAccounts() != null) {
+      for (Account account : customer.getAccounts()) {
+        insertOrUpdate(account);
+      }
+    }
+  }

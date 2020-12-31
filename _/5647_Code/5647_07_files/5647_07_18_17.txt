@@ -1,0 +1,14 @@
+rule averageBalanceOver30Days
+no-loop true
+  when
+    $account : Account( )
+    $averageBalance : BigDecimal( ) from accumulate(
+      AccountUpdatedEvent( accountNumber == $account.number, 
+      $balance : balance ) over window:time( 30d ) 
+      from entry-point AccountStream, average( $balance ) )
+    $accountInfo : AccountInfo( number == $account.number )
+  then
+    modify($accountInfo) {
+    	setAverageBalance($averageBalance)
+    };
+end

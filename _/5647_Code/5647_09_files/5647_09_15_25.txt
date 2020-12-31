@@ -1,0 +1,4 @@
+  @Override
+  public void requestLoan(Loan loan, Customer customer) {
+    loanApprovalService.requestLoan(loan, customer);
+  }

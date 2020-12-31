@@ -1,0 +1,5 @@
+KnowledgeBuilderConfiguration builderConf = 
+  KnowledgeBuilderFactory.newKnowledgeBuilderConfiguration();
+builderConf.setOption(AccumulateFunctionOption.get(
+  "bigDecimalAverage", 
+  new BigDecimalAverageAccumulateFunction()));

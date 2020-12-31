@@ -1,0 +1,15 @@
+rule reduceLegacyAccounts
+	when
+		$accountMap1 : Map( this["_type_"] == "Account" )
+		$accountMap2 : Map( this["_type_"] == "Account", 
+			eval( $accountMap1 != $accountMap2 ), 
+			this["customer_id"] ==$accountMap1["customer_id"],
+			this["currency"] == $accountMap1["currency"])
+	then
+		modify($accountMap1) {
+			put("balance", (
+				(BigDecimal)$accountMap1.get("balance")).add(
+				(BigDecimal)$accountMap2.get("balance")))
+		} 
+		retract( $accountMap2 );
+end

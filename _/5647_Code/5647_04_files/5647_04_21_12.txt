@@ -1,0 +1,10 @@
+  public class StaticMockLegacyBankService extends
+      MockLegacyBankService {
+    private Map addressMap;
+    public StaticMockLegacyBankService(Map addressMap) {
+      this.addressMap = addressMap;
+    }
+    public List findAddressByCustomerId(Long customerId) {
+      return Arrays.asList(addressMap);
+    }
+  }

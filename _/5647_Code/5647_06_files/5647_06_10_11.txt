@@ -1,0 +1,9 @@
+    account.setOwner(null);
+    statefulService.insertOrUpdate(account);
+    report = statefulService.executeRules();
+    assertEquals(4, report.getMessages().size());
+    assertTrue(report.contains("accountNumberUnique"));
+    assertTrue(report.contains("accountOwnerRequired"));
+    assertTrue(report.contains("accountBalanceAtLeast"));
+    assertTrue(report.contains("phoneNumberRequired"));    
+  }

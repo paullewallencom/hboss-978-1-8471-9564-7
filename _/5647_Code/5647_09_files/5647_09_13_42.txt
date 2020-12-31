@@ -1,0 +1,14 @@
+  public void approveLoan(LoanApprovalHolder holder) {
+    StatefulKnowledgeSession session =
+      sessionLookup.loadSession(holder.getSessionId());
+    try {
+      SignalEventCommand command = new SignalEventCommand();
+      command.setProcessInstanceId(
+        holder.getProcessInstanceId());
+      command.setEventType("LoanApprovedEvent");
+      command.setEvent(true);
+      session.execute(command);
+    } finally {
+      session.dispose();
+    }
+  }

@@ -1,0 +1,11 @@
+  @Test
+  public void ratingSplitNodeAccept() {
+    setUpHighAmount();
+    setUpHighRating();
+    startProcess();    
+    
+    assertTrue(trackingProcessEventListener.isNodeTriggered(
+        PROCESS_LOAN_APPROVAL, NODE_SPLIT_RATING));
+    assertTrue(trackingProcessEventListener.isNodeTriggered(
+        PROCESS_LOAN_APPROVAL, NODE_JOIN_RATING));
+  }

@@ -1,0 +1,5 @@
+declare AccountInfo
+	number : Long
+	averageBalance : BigDecimal
+	averageAmount : BigDecimal
+end

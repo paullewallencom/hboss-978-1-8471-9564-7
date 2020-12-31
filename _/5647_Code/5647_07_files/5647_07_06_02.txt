@@ -1,0 +1,3 @@
+declare TransactionCreatedEvent
+	@role( event )	
+end

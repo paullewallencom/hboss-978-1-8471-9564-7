@@ -1,0 +1,10 @@
+  private Customer createValidCustomer() {
+    Customer customer = new Customer();
+    customer.setPhoneNumber("123 456 789");
+    customer.setAddress(new Address());
+    
+    statefulService.insertOrUpdateRecursive(customer);
+    ValidationReport report = statefulService.executeRules();
+    assertEquals(0, report.getMessages().size());
+    return customer;
+  }

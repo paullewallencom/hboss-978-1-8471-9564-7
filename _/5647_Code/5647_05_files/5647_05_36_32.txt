@@ -1,0 +1,16 @@
+  static StatelessKnowledgeSession session;
+  Account account;
+  static DateMidnight DATE;
+
+  @BeforeClass
+  public static void setUpClass() throws Exception {
+    KnowledgeBase knowledgeBase = 
+      createKnowledgeBaseFromSpreadsheet();
+    session = knowledgeBase.newStatelessKnowledgeSession();
+    DATE = new DateMidnight(2008, 1, 1);
+  }
+
+  @Before
+  public void setUp() throws Exception {    
+    account = new Account();
+  }

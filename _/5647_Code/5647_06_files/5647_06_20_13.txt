@@ -1,0 +1,8 @@
+rule unusualLocation
+	when
+		$transaction : Transaction( )
+		RiskFactor( unusualLocation > 10, 
+			transaction == $transaction )		
+	then
+		insertLogical(new SuspiciousTransaction($transaction))
+end

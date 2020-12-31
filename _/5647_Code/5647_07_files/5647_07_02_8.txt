@@ -1,0 +1,11 @@
+  @Test
+  public void notification() throws Exception {
+    session.fireAllRules();
+    assertNotSame(Account.Status.BLOCKED,account.getStatus());
+
+    entry = session
+        .getWorkingMemoryEntryPoint("LostCardStream");
+    entry.insert(new LostCardEvent(account.getNumber()));
+    session.fireAllRules();
+    assertSame(Account.Status.BLOCKED, account.getStatus());
+  }

@@ -1,0 +1,23 @@
+public class TaskListController extends AbstractController {
+  @Autowired
+  private MinaTaskClient client;
+  @Autowired
+  private WebSessionUtils webSessionUtils;
+
+  @Override
+  protected ModelAndView handleRequestInternal(
+      HttpServletRequest request,HttpServletResponse response)
+      throws Exception {
+    BlockingTaskSummaryResponseHandler responseHandler = 
+      new BlockingTaskSummaryResponseHandler();
+    User user = webSessionUtils.getUser();
+    client.getTasksAssignedAsPotentialOwner(user.getUserId(),
+        user.getLanguage(), responseHandler);
+    List<TaskSummary> tasks = responseHandler.getResults();
+
+    Map<String, Object> model = new HashMap<String, Object>();
+    model.put("tasks", tasks);
+
+    return new ModelAndView("taskList", "model", model);
+  }
+}

@@ -1,0 +1,20 @@
+rule "addressRequired"
+	when
+		Customer( address == null )
+	then
+		warning(drools);
+end
+
+rule "phoneNumberRequired"
+ 	when
+ 		Customer( phoneNumber == null || == "" )		
+	then
+		error(drools);
+end
+
+rule "accountOwnerRequired"
+	when
+		$account : Account( owner == null )		
+	then		
+		error(drools, $account);
+end

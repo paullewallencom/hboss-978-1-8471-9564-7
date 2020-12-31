@@ -1,0 +1,24 @@
+public class StatefulServiceIntegrationTest {
+  StatefulServiceImpl statefulService;
+  static KnowledgeBase knowledgeBase;
+
+  @BeforeClass
+  public static void setUpClass() throws Exception {
+    knowledgeBase = DroolsHelper.createKnowledgeBase(
+        "validation-stateful.drl");
+  }
+
+  @Before
+  public void initialize() throws Exception {
+    ReportFactory reportFactory = new DefaultReportFactory();
+    BankingInquiryService inquiryService = 
+        new BankingInquiryServiceImpl();
+
+    statefulService = new StatefulServiceImpl(knowledgeBase,
+        reportFactory, inquiryService);
+  }
+
+  @After
+  public void terminate() {
+    statefulService.terminate();
+  }

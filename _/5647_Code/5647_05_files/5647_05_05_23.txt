@@ -1,0 +1,7 @@
+rule addressNormalizationUSA
+	when
+		There is legacy Address-1
+		- country is one of "US", "U.S.", "USA", "U.S.A"		
+	then
+		for legacy Address-1 set country to USA 
+end

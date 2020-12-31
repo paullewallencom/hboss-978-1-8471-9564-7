@@ -1,0 +1,11 @@
+rule unknownCurrency
+	when
+		$accountMap : Map( this["_type_"] == "Account", 
+			this["currency"] != null && != "EUR" )
+		not( String() from 
+			getConversionToEurFrom($accountMap["currency"]) )
+	then
+		 validationReport.addMessage(
+			reportFactory.createMessage(Message.Type.ERROR, 
+			drools.getRule().getName(), $accountMap));
+end

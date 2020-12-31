@@ -1,0 +1,14 @@
+rule currencyConversionToEUR
+	when
+		$accountMap : Map( this["_type_"] == "Account", 
+			this["currency"] != null && != "EUR" )
+		$conversionAmount : String() from 
+			getConversionToEurFrom($accountMap["currency"])
+	then
+		modify($accountMap) {
+			put("currency", "EUR"),	 
+			put("balance", new BigDecimal(
+				$conversionAmount).multiply(new BigDecimal(
+				(String)$accountMap.get("balance"))))
+		} 
+end

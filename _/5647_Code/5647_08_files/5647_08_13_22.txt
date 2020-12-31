@@ -1,0 +1,19 @@
+    BlockingTaskOperationResponseHandler operationHandler = 
+        new BlockingTaskOperationResponseHandler();
+    client.claim(task.getId(), "123", operationHandler);
+    operationHandler.waitTillDone(10000);
+
+    operationHandler = 
+        new BlockingTaskOperationResponseHandler();
+    client.start(task.getId(), "123", operationHandler);
+    operationHandler.waitTillDone(10000);
+
+    operationHandler = 
+        new BlockingTaskOperationResponseHandler();
+    client.complete(task.getId(), "123", null,
+        operationHandler);
+    operationHandler.waitTillDone(10000);
+    
+    assertTrue(trackingProcessEventListener.isNodeTriggered(
+        PROCESS_LOAN_APPROVAL, NODE_JOIN_PROCESS_LOAN));
+  }

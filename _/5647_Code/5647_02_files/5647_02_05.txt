@@ -1,0 +1,9 @@
+rule "interest calculation"
+no-loop
+	when
+		$account : Account( )
+	then
+		modify($account) {
+          setBalance( (long)($account.getBalance() * 1.03) )
+        };		
+end

@@ -1,0 +1,9 @@
+/**
+ * service for validating the banking domain
+ */
+public interface BankingValidationService {
+  /**
+   * validates given customer and returns validation report
+   */
+  ValidationReport validate(Customer customer);
+}

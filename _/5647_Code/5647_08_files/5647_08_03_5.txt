@@ -1,0 +1,2 @@
+  static final long NODE_FAULT_NOT_VALID = 21;
+  static final long NODE_SPLIT_VALIDATED = 20;

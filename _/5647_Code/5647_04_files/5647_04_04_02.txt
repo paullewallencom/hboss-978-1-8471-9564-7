@@ -1,0 +1,19 @@
+package droolsbook.transform;
+
+import java.util.*;
+
+import droolsbook.transform.service.LegacyBankService;
+import droolsbook.bank.model.Address;
+import droolsbook.bank.model.Address.Country;
+
+global LegacyBankService legacyService;
+
+rule findAllCustomers
+dialect "mvel"
+	when
+		$customerMap : Map( ) 
+			from legacyService.findAllCustomers()		
+	then	
+		$customerMap["_type_"] = "Customer"	
+		insert( $customerMap )
+end

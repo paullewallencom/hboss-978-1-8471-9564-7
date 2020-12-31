@@ -1,0 +1,16 @@
+  /**
+   * sends 'loan approved' event to specific process
+   */
+  @PersistenceContext(unitName="entityManagerFactory")
+  EntityManager em;
+  
+  @Override
+  protected ModelAndView handleRequestInternal(
+      HttpServletRequest request,HttpServletResponse response)
+      throws Exception {
+    String sessionId = request.getParameter("sessionId");
+    LoanApprovalHolder pendingLoanApprovalHolder = em.find(
+        LoanApprovalHolder.class, Integer.valueOf(sessionId));
+    bankingService.approveLoan(pendingLoanApprovalHolder);
+    return new ModelAndView("redirect:index.jsp");
+  }

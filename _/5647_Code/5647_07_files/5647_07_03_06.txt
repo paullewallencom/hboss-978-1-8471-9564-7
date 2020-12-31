@@ -1,0 +1,26 @@
+public class CepTest {
+  static KnowledgeBase knowledgeBase;
+  StatefulKnowledgeSession session;
+  Account account;
+  FactHandle accountHandle;
+  SessionPseudoClock clock;
+  TrackingAgendaEventListener trackingAgendaEventListener;
+  WorkingMemoryEntryPoint entry;
+
+  @Before
+  public void initialize() throws Exception {
+    KnowledgeSessionConfiguration conf = 
+      KnowledgeBaseFactory.newKnowledgeSessionConfiguration();
+    conf.setOption( ClockTypeOption.get( "pseudo" ) );    
+    session = knowledgeBase.newStatefulKnowledgeSession(conf,
+        null);
+    clock = (SessionPseudoClock) session.getSessionClock();
+
+    trackingAgendaEventListener = 
+        new TrackingAgendaEventListener();
+    session.addEventListener(trackingAgendaEventListener);
+
+    account = new Account();
+    account.setNumber(123456l);
+    account.setBalance(BigDecimal.valueOf(1000.00));
+    accountHandle = session.insert(account);

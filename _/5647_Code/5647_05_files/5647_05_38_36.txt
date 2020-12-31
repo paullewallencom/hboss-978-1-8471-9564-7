@@ -1,0 +1,10 @@
+  @Test
+  public void defaultTransactionalRate() throws Exception {
+    account.setType(Account.Type.TRANSACTIONAL);
+    account.setCurrency("EUR");
+
+    session.execute(account);
+
+    assertEquals(new BigDecimal("0.01"), account
+        .getInterestRate());
+  }

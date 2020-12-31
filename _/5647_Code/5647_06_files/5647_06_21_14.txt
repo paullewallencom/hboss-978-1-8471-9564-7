@@ -1,0 +1,9 @@
+rule freezeAccount
+salience -1000
+	when
+		$from : Account(  )		
+		$transaction : Transaction( from == $from )
+		SuspiciousTransaction( transaction == $transaction)
+	then
+		$from.setStatus(Account.Status.ON_HOLD);
+end

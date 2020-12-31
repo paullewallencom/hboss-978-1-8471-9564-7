@@ -1,0 +1,15 @@
+  /**
+   * asserts that the report contains one message with 
+   * expected context (input parameter)
+   */
+  void reportContextContains(ExecutionResults results,
+      String messgeKey, Object object) {
+    ValidationReport validationReport = (ValidationReport)
+        results.getValue("validationReport");
+    assertEquals(1, validationReport.getMessages().size());
+    Message message = validationReport.getMessages()
+        .iterator().next();
+    List<Object> messageContext = message.getContextOrdered();
+    assertEquals(1, messageContext.size());
+    assertSame(object, messageContext.iterator().next());
+  }

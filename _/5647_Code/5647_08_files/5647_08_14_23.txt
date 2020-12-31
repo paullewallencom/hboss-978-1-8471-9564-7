@@ -1,0 +1,15 @@
+  @Test
+  public void approveEventJoin() {
+    setUpLowAmount();
+    startProcess();
+    assertEquals(ProcessInstance.STATE_ACTIVE, processInstance
+        .getState());
+    assertFalse(trackingProcessEventListener.isNodeTriggered(
+        PROCESS_LOAN_APPROVAL, NODE_WORK_ITEM_TRANSFER));
+    approveLoan();
+    assertTrue(trackingProcessEventListener.isNodeTriggered(
+        PROCESS_LOAN_APPROVAL, NODE_WORK_ITEM_TRANSFER));
+
+    assertEquals(ProcessInstance.STATE_COMPLETED,
+        processInstance.getState());
+  }

@@ -1,0 +1,25 @@
+  @Test
+  public void findAddress() throws Exception {
+    final Map customerMap = new HashMap();
+    customerMap.put("_type_", "Customer");
+    customerMap.put("customer_id", new Long(111));
+
+    final Map addressMap = new HashMap();
+    LegacyBankService service = 
+      new StaticMockLegacyBankService(addressMap);
+    session.setGlobal("legacyService", service);
+
+    ExecutionResults results = execute(Arrays
+        .asList(customerMap), "findAddress", "Address",
+        "objects");
+
+    assertEquals("Address", addressMap.get("_type_"));
+    Iterator<?> addressIterator = ((List<?>) results
+        .getValue("objects")).iterator();
+    assertEquals(addressMap, addressIterator.next());
+    assertFalse(addressIterator.hasNext());
+
+    // clean-up
+    session.setGlobal("legacyService",
+        new MockLegacyBankService());
+  }

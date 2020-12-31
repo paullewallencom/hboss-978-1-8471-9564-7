@@ -1,0 +1,12 @@
+  @Test
+  public void addressNormalizationUSA() throws Exception {
+    Map addressMap = new HashMap();
+    addressMap.put("_type_", "Address");
+    addressMap.put("country", "U.S.A");
+
+    execute(Arrays.asList(addressMap),
+        "addressNormalizationUSA", null, null);
+
+    assertEquals(Address.Country.USA, addressMap
+        .get("country"));
+  }

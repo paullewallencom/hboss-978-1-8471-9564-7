@@ -1,0 +1,21 @@
+  @Test
+  public void studentAccountCustomerAgeLessThan()
+      throws Exception {
+    DateMidnight NOW = new DateMidnight();
+    Customer customer = createCustomerBasic();
+    Account account =customer.getAccounts().iterator().next();
+    customer.setDateOfBirth(NOW.minusYears(40).toDate());
+    assertEquals(Account.Type.TRANSACTIONAL,
+         account.getType());
+    assertNotReportContains(Message.Type.ERROR,
+        "studentAccountCustomerAgeLessThan", customer);
+
+    account.setType(Account.Type.STUDENT);
+    assertReportContains(Message.Type.ERROR,
+        "studentAccountCustomerAgeLessThan",customer,account);
+
+    customer.setDateOfBirth(NOW.minusYears(20).toDate());
+    assertNotReportContains(Message.Type.ERROR,
+        "studentAccountCustomerAgeLessThan", customer);
+  }
+

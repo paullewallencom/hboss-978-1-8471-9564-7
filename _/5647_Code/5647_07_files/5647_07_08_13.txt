@@ -1,0 +1,22 @@
+  @Test
+  public void twoLargeWithdrawals() throws Exception {
+    entry = session
+        .getWorkingMemoryEntryPoint("TransactionStream");
+    transactionCompletedEvent(400);
+    clock.advanceTime(5, TimeUnit.DAYS);
+    transactionCompletedEvent(600);
+    clock.advanceTime(11, TimeUnit.DAYS);
+
+    transactionCreatedEvent(100);
+    clock.advanceTime(30, TimeUnit.SECONDS);
+    transactionCreatedEvent(1600);
+    assertNotFired("twoLargeWithdrawals");
+
+    clock.advanceTime(91, TimeUnit.SECONDS);
+    transactionCreatedEvent(2100);
+    assertNotFired("twoLargeWithdrawals");
+
+    clock.advanceTime(30, TimeUnit.SECONDS);
+    transactionCreatedEvent(1700);
+    assertFired("twoLargeWithdrawals");
+  }

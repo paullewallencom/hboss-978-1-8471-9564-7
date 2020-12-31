@@ -1,0 +1,5 @@
+    new Thread(new Runnable() {
+      public void run() {
+        session.fireUntilHalt();
+      }
+    }).start();

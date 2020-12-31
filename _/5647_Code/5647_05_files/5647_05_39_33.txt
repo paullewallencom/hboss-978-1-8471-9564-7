@@ -1,0 +1,27 @@
+  private static KnowledgeBase createKnowledgeBaseFromSpreadsheet()
+      throws Exception {
+    DecisionTableConfiguration dtconf =KnowledgeBuilderFactory
+      .newDecisionTableConfiguration();
+    dtconf.setInputType( DecisionTableInputType.XLS );
+    //dtconf.setInputType( DecisionTableInputType.CSV );
+    
+    KnowledgeBuilder knowledgeBuilder = 
+      KnowledgeBuilderFactory.newKnowledgeBuilder();    
+    knowledgeBuilder.add(ResourceFactory.newClassPathResource(
+        "interest calculation.xls"), ResourceType.DTABLE, 
+        dtconf);
+    //knowledgeBuilder.add(ResourceFactory
+    //  .newClassPathResource("interest calculation.csv"), 
+    //  ResourceType.DTABLE, dtconf);
+    
+    if (knowledgeBuilder.hasErrors()) {
+      throw new RuntimeException(knowledgeBuilder.getErrors()
+          .toString());
+    }
+    
+    KnowledgeBase knowledgeBase = KnowledgeBaseFactory
+      .newKnowledgeBase();
+    knowledgeBase.addKnowledgePackages(
+        knowledgeBuilder.getKnowledgePackages());
+    return knowledgeBase;
+  }

@@ -1,0 +1,25 @@
+  @Test
+  public void sequenceOfIncreasingWithdrawals()
+      throws Exception {
+    entry = session
+        .getWorkingMemoryEntryPoint("TransactionStream");    
+    accountInfoFactType.set(accountInfo, "averageBalance",
+        BigDecimal.valueOf(1000));
+    session.update(accountInfoHandle, accountInfo);
+
+    transactionCreatedEvent(290);
+    clock.advanceTime(10, TimeUnit.SECONDS);
+    transactionCreatedEvent(50);
+    clock.advanceTime(10, TimeUnit.SECONDS);
+    transactionCreatedEvent(300);
+    assertNotFired("sequenceOfIncreasingWithdrawals");
+
+    clock.advanceTime(10, TimeUnit.SECONDS);
+    transactionCreatedEvent(350);
+    assertNotFired("sequenceOfIncreasingWithdrawals");
+
+    clock.advanceTime(10, TimeUnit.SECONDS);
+    transactionCreatedEvent(400);
+    clock.advanceTime(1, TimeUnit.MICROSECONDS);
+    assertFired("sequenceOfIncreasingWithdrawals");
+  }

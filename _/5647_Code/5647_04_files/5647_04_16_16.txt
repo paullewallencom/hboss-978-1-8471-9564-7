@@ -1,0 +1,14 @@
+  @Test
+  public void currencyConversionToEUR() throws Exception {
+    Map accountMap = new HashMap();
+    accountMap.put("_type_", "Account");
+    accountMap.put("currency", "USD");
+    accountMap.put("balance", "1000");
+
+    execute(Arrays.asList(accountMap),
+        "currencyConversionToEUR", null, null);
+
+    assertEquals("EUR", accountMap.get("currency"));
+    assertEquals(new BigDecimal("670.000"), accountMap
+        .get("balance"));
+  }

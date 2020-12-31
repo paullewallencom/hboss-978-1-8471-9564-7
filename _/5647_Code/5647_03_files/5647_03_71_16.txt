@@ -1,0 +1,16 @@
+  @Test
+  public void accountNumberUnique() throws Exception {
+    Customer customer = createCustomerBasic();
+    Account account = customer.getAccounts().iterator()
+        .next();
+    session.setGlobal("inquiryService",
+        new BankingInquiryServiceImpl() {
+          @Override
+          public boolean isAccountNumberUnique(
+              Account accout) {
+            return false;
+          }
+        });
+    assertReportContains(Message.Type.ERROR,
+        "accountNumberUnique", customer, account);
+  }

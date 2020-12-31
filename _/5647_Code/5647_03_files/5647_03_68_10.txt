@@ -1,0 +1,26 @@
+  void assertReportContains(Message.Type type,
+      String messageKey,Customer customer,Object... context) {
+    ValidationReport report = 
+        reportFactory.createValidationReport();
+    List<Command> commands = new ArrayList<Command>();
+    commands.add(CommandFactory.newSetGlobal(
+        "validationReport", report));
+    commands.add(CommandFactory
+        .newInsertElements(getFacts(customer)));
+    session.execute(CommandFactory
+        .newBatchExecution(commands));
+
+    assertTrue("Report doesn't contain message [" + messageKey
+        + "]", report.contains(messageKey));
+    Message message = getMessage(report, messageKey);
+    assertEquals(Arrays.asList(context),
+        message.getContextOrdered());
+  }
+  
+  private Collection<Object> getFacts(Customer customer) {
+    ArrayList<Object> facts = new ArrayList<Object>();
+    facts.add(customer);
+    facts.add(customer.getAddress());
+    facts.addAll(customer.getAccounts());
+    return facts;
+  }

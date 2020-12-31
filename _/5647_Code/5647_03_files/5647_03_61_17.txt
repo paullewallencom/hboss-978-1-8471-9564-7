@@ -1,0 +1,7 @@
+rule "accountNumberUnique"
+	when
+		$account : Account(eval(
+			!inquiryService.isAccountNumberUnique($account)))
+	then
+		error(drools, $account);
+end

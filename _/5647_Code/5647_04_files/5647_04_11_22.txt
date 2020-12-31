@@ -1,0 +1,8 @@
+query getCustomer
+	$customerMap : Map( this["_type_"] == "Customer" )
+end
+
+query getAccountByCustomerId (Map customerMap)
+	$accountMap : Map( this["_type_"] == "Account", 
+		this["customer_id"] == customerMap["customer_id"] )
+end

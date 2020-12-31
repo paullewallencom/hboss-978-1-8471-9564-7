@@ -1,0 +1,9 @@
+function String getConversionToEurFrom(String currencyFrom) {
+	String conversion = null;
+	if ("USD".equals(currencyFrom)) {
+		conversion = "0.670";
+	} else if ("SKK".equals(currencyFrom)) {
+		conversion = "0.033";
+	}
+	return conversion;
+}

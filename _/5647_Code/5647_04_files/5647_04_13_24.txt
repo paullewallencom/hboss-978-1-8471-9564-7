@@ -1,0 +1,13 @@
+    QueryResults accountQueryResults = (QueryResults) 
+      results.getValue("accounts");
+    for (QueryResultsRow accountQueryResult : 
+      accountQueryResults) {
+      Map accountMap = (Map) accountQueryResult
+          .get("$accountMap");
+
+      Account account = new Account();
+      account.setNumber((Long) accountMap.get("number"));
+      account.setBalance((BigDecimal) accountMap
+          .get("balance"));
+      //..
+      customer.addAccount(account);

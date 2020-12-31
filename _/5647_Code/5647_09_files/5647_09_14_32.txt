@@ -1,0 +1,28 @@
+  public LoanApprovalHolder requestLoan(final Loan loan,
+      final Customer customer) {
+    LoanApprovalHolder holder = new LoanApprovalHolder();
+    StatefulKnowledgeSession session = sessionLookup
+        .newSession();
+    try {
+      Map<String, Object> parameterMap = 
+        new HashMap<String, Object>();
+      parameterMap.put("loanSourceAccount",loanSourceAccount);
+      parameterMap.put("customer", customer);
+      parameterMap.put("loan", loan);
+      session.insert(loan);
+      session.insert(customer);
+      ProcessInstance processInstance = session.startProcess(
+          "loanApproval", parameterMap);
+
+      holder.setCustomer(customer);
+      holder.setSessionId(session.getId());
+      holder.setProcessInstanceId(processInstance.getId());
+      em.persist(holder);
+      
+      session.insert(processInstance);
+      session.fireAllRules();
+    } finally {
+      session.dispose();
+    }
+    return holder;
+  }

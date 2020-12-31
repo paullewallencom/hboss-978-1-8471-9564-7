@@ -1,0 +1,3 @@
+  FactType accountInfoFactType;
+  Object accountInfo;
+  FactHandle accountInfoHandle;

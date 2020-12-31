@@ -1,0 +1,11 @@
+  @Test
+  public void amountToBorrowLow() {
+    setUpLowAmount();
+    startProcess();
+    
+    assertTrue(trackingProcessEventListener.isNodeTriggered(
+        PROCESS_LOAN_APPROVAL, NODE_JOIN_RATING));
+    assertFalse(trackingProcessEventListener
+        .isNodeTriggered(PROCESS_LOAN_APPROVAL,
+            NODE_SUBFLOW_RATING_CALCULATION));
+  }

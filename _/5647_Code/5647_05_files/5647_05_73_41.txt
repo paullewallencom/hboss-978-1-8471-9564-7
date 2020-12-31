@@ -1,0 +1,12 @@
+  @Test
+  public void unknownCountryKnown() throws Exception {
+    Map addressMap = new HashMap();
+    addressMap.put("_type_", "Address");
+    addressMap.put("country", "Ireland");
+
+    session.startProcess("dataTransformation");
+    session.insert(addressMap);
+    session.fireAllRules();
+
+    assertFalse(validationReport.contains("unknownCountry"));
+  }

@@ -1,0 +1,15 @@
+  @Test
+  public void amountToBorrowHighRatingCalculation() {
+    setUpHighAmount();
+    startProcess();
+    assertTrue(trackingProcessEventListener
+        .isNodeTriggered(PROCESS_LOAN_APPROVAL,
+            NODE_SUBFLOW_RATING_CALCULATION));
+    assertTrue(trackingProcessEventListener.isNodeTriggered(
+        PROCESS_RATING_CALCULATION,
+        NODE_GROUP_CALCULATE_RATING));
+    WorkflowProcessInstance process = 
+        (WorkflowProcessInstance) processInstance;
+    assertEquals(1500, 
+        process.getVariable("customerLoanRating"));
+  }

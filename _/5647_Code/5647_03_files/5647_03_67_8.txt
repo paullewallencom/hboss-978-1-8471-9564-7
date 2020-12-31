@@ -1,0 +1,32 @@
+public class ValidationTest {
+  static StatelessKnowledgeSession session;
+  static ReportFactory reportFactory;  
+  
+  @BeforeClass
+  public static void setUpClass() throws Exception {
+    KnowledgeBuilder builder = KnowledgeBuilderFactory
+        .newKnowledgeBuilder();
+    builder.add(ResourceFactory.newClassPathResource(
+        "validation.drl"), ResourceType.DRL);
+    if (builder.hasErrors()) {
+      throw new RuntimeException(builder.getErrors()
+          .toString());
+    }
+    
+    KnowledgeBaseConfiguration configuration = 
+      KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
+    configuration.setOption(SequentialOption.YES);
+
+    KnowledgeBase knowledgeBase = KnowledgeBaseFactory
+        .newKnowledgeBase(configuration);
+    knowledgeBase.addKnowledgePackages(builder
+        .getKnowledgePackages());
+    
+    BankingInquiryService inquiryService = 
+         new BankingInquiryServiceImpl();
+    reportFactory = new DefaultReportFactory();
+    
+    session = knowledgeBase.newStatelessKnowledgeSession();
+    session.setGlobal("reportFactory", reportFactory);
+    session.setGlobal("inquiryService", inquiryService);
+  }

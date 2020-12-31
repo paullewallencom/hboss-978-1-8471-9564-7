@@ -1,0 +1,15 @@
+/**
+ * knows how to create a new or lookup existing knowledge 
+ * session
+ */
+public interface KnowledgeSessionLookup {
+  /**
+   * creates a new session 
+   */
+  StatefulKnowledgeSession newSession();
+  
+  /**
+   * loads an existing session 
+   */
+  StatefulKnowledgeSession loadSession(int sessionId);
+}

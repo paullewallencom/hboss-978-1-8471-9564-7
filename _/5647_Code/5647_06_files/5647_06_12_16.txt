@@ -1,0 +1,3 @@
+query getAllMessages
+	$message : Message( )
+end

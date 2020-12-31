@@ -1,0 +1,19 @@
+  private static KnowledgeBase createKnowledgeBase() {
+    KnowledgeBuilder builder = KnowledgeBuilderFactory
+        .newKnowledgeBuilder();
+    builder.add(ResourceFactory
+        .newClassPathResource("basicRule.drl"),
+        ResourceType.DRL);
+
+    if (builder.hasErrors()) {
+      throw new RuntimeException(builder.getErrors()
+          .toString());
+    }
+
+    KnowledgeBase knowledgeBase = KnowledgeBaseFactory
+        .newKnowledgeBase();
+    knowledgeBase.addKnowledgePackages(builder
+        .getKnowledgePackages());
+    return knowledgeBase;
+  }
+}

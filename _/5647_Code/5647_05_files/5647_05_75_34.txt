@@ -1,0 +1,4 @@
+    String drlString = DecisionTableFactory
+        .loadFromInputStream(ResourceFactory
+            .newClassPathResource("interest calculation.xls")
+            .getInputStream(), dtconf);

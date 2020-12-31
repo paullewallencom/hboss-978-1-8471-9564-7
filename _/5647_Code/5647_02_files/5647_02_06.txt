@@ -1,0 +1,9 @@
+rule "rule attributes"
+salience 100
+dialect "mvel" 
+no-loop
+	when
+		//conditions
+	then
+		//consequence		
+end

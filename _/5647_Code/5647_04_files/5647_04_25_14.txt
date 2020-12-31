@@ -1,0 +1,14 @@
+  @Test
+  public void unknownCountry() throws Exception {
+    Map addressMap = new HashMap();
+    addressMap.put("_type_", "Address");
+    addressMap.put("country", "no country");
+    
+    ExecutionResults results = execute(Arrays
+        .asList(addressMap), "unknownCountry", null, null);
+
+    ValidationReport report = (ValidationReport) results
+        .getValue("validationReport");
+    reportContextContains(results, "unknownCountry",
+        addressMap);
+  }

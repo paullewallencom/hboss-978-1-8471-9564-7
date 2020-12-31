@@ -1,0 +1,11 @@
+  static KnowledgeBase knowledgeBase;  
+  StatefulKnowledgeSession session;
+
+  @BeforeClass
+  public static void setUpClass() throws Exception {
+    knowledgeBase = createKnowledgeBaseFromRuleFlow();
+  }
+
+  @Before
+  public void initialize() throws Exception {
+    session = knowledgeBase.newStatefulKnowledgeSession();

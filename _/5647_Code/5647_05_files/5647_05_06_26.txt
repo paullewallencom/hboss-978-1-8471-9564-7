@@ -1,0 +1,8 @@
+rule unknownCountry
+Apply after address normalizations
+	when
+		There is legacy Address-1
+		- country is not normalized 
+	then
+		Display ERROR for legacy Address-1
+end

@@ -1,0 +1,19 @@
+  /**
+   * claims specified task for the current user
+   */
+  @Override
+  protected ModelAndView handleRequestInternal(
+      HttpServletRequest request,HttpServletResponse response)
+      throws Exception {
+    long taskId = Long.parseLong(request
+        .getParameter("taskId"));
+    User user = webSessionUtils.getUser();
+    BlockingTaskOperationResponseHandler 
+      operationResponseHandler = 
+        new BlockingTaskOperationResponseHandler();
+    client.claim(taskId, user.getUserId(),
+        operationResponseHandler);
+    operationResponseHandler.waitTillDone(5000);
+
+    return new ModelAndView("redirect:taskList.htm");
+  }

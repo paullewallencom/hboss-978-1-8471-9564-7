@@ -1,0 +1,7 @@
+rule accountHasCustomer
+	when
+		$customer : Customer( )		
+		Account( owner instanceEquals $customer )
+	then 
+		//..
+end
